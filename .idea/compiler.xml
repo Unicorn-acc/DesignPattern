@@ -6,8 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="0.principles" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ch0_principles" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
