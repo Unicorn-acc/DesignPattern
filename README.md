@@ -1,7 +1,11 @@
 # DesignPattern
 黑马设计模式详解、笔记：https://www.bilibili.com/video/BV1Np4y1z7BU
 
-笔记图片来源：https://bright-boy.gitee.io/technical-notes/#/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index
+参考：
+
+https://bright-boy.gitee.io/technical-notes/#/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index
+
+https://blog.csdn.net/qq_40493944/category_11264667.html
 
 ## 1，设计模式概述
 
@@ -202,7 +206,7 @@ UML 从目标系统的不同角度出发，定义了用例图、类图、对象�
 
 下面看一个里氏替换原则中经典的一个例子
 
-【例】正方形不是长方形。
+【例】正方形不是长方形。ch0_demo2
 
 在数学领域里，正方形毫无疑问是长方形，它是一个长宽相等的长方形。所以，我们开发的一个与几何图形相关的软件系统，就可以顺理成章的让正方形继承自长方形。
 
@@ -288,12 +292,12 @@ public class RectangleDemo {
 }
 ```
 
-我们运行一下这段代码就会发现，假如我们把一个普通长方形作为参数传入resize方法，就会看到长方形宽度逐渐增长的效果，当宽度大于长度,代码就会停止，这种行为的结果符合我们的预期；假如我们再把一个正方形作为参数传入resize方法后，就会看到正方形的宽度和长度都在不断增长，代码会一直运行下去，直至系统产生溢出错误。所以，普通的长方形是适合这段代码的，正方形不适合。
-我们得出结论：在resize方法中，Rectangle类型的参数是不能被Square类型的参数所代替，如果进行了替换就得不到预期结果。因此，Square类和Rectangle类之间的继承关系违反了里氏代换原则，它们之间的继承关系不成立，正方形不是长方形。
+我们运行一下这段代码就会发现，假如我们把一个普通长方形作为参数传入resize方法，就会看到长方形宽度逐渐增长的效果，当宽度大于长度,代码就会停止，这种行为的结果符合我们的预期；假如我们再把一个正方形作为参数传入resize方法后，就会看到正方形的宽度和长度都在不断增长，代码会一直运行下去，直至系统产生溢出错误。所以，**普通的长方形是适合这段代码的，正方形不适合。**
+我们得出结论：在resize方法中，Rectangle类型的参数是不能被Square类型的参数所代替，**如果进行了替换就得不到预期结果。因此，Square类和Rectangle类之间的继承关系违反了里氏代换原则，它们之间的继承关系不成立，正方形不是长方形。**
 
 如何改进呢？此时我们需要重新设计他们之间的关系。抽象出来一个四边形接口(Quadrilateral)，让Rectangle类和Square类实现Quadrilateral接口
 
-
+![](https://img-blog.csdnimg.cn/20210506201329443.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hleGlucWlvbmc=,size_16,color_FFFFFF,t_70#pic_center)
 
 ## 3.3 依赖倒转原则
 
@@ -307,7 +311,7 @@ public class RectangleDemo {
 
 **类图如下：**
 
-<img src="img\依赖倒转原则.png" style="zoom:80%;" />
+<img src="https://img-blog.csdnimg.cn/20210506201347217.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hleGlucWlvbmc=,size_16,color_FFFFFF,t_70#pic_center" />
 
 代码如下：
 
@@ -417,7 +421,7 @@ public class TestComputer {
 
 **类图如下：**
 
-<img src="img/依赖倒转原则改进.png" alt="image-20191229173554296" style="zoom:70%;" />
+<img src="https://img-blog.csdnimg.cn/20210506201404176.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hleGlucWlvbmc=,size_16,color_FFFFFF,t_70#pic_center" />
 
 **电脑（Computer）：**
 
@@ -464,7 +468,7 @@ public class Computer {
 
 ## 3.4 接口隔离原则
 
-客户端不应该被迫依赖于它不使用的方法；一个类对另一个类的依赖应该建立在最小的接口上。
+客户端**不应该被迫依赖于它不使用的方法**；**一个类对另一个类的依赖应该建立在最小的接口上。**
 
 下面看一个例子来理解接口隔离原则
 
@@ -476,7 +480,7 @@ public class Computer {
 
 上面的设计我们发现了它存在的问题，黑马品牌的安全门具有防盗，防水，防火的功能。现在如果我们还需要再创建一个传智品牌的安全门，而该安全门只具有防盗、防水功能呢？很显然如果实现SafetyDoor接口就违背了接口隔离原则，那么我们如何进行修改呢？看如下类图：
 
-![](img\接口隔离原则1.png)
+![](https://bright-boy.gitee.io/technical-notes/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/img/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%991.png)
 
 代码如下：
 
@@ -541,11 +545,11 @@ public class ItcastSafetyDoor implements AntiTheft,Fireproof {
 
 ## 3.5 迪米特法则
 
-迪米特法则又叫最少知识原则。
+迪米特法则又叫最少知道原则。
 
 只和你的直接朋友交谈，不跟“陌生人”说话（Talk only to your immediate friends and not to strangers）。
 
-其含义是：如果两个软件实体无须直接通信，那么就不应当发生直接的相互调用，可以通过第三方转发该调用。其目的是降低类之间的耦合度，提高模块的相对独立性。
+**其含义是：如果两个软件实体无须直接通信，那么就不应当发生直接的相互调用，可以通过第三方转发该调用。其目的是降低类之间的耦合度，提高模块的相对独立性**。
 
 迪米特法则中的“朋友”是指：当前对象本身、当前对象的成员对象、当前对象所创建的对象、当前对象的方法参数等，这些对象同当前对象存在关联、聚合或组合关系，可以直接访问这些对象的方法。
 
@@ -557,7 +561,7 @@ public class ItcastSafetyDoor implements AntiTheft,Fireproof {
 
 类图如下：
 
-<img src="img/迪米特法则.png" alt="image-20191229173554296" style="zoom:80%;" />
+<img src="https://img-blog.csdnimg.cn/20210506201453204.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hleGlucWlvbmc=,size_16,color_FFFFFF,t_70#pic_center" alt="image-20191229173554296" style="zoom:80%;" />
 
 代码如下：
 
@@ -649,9 +653,9 @@ public class Agent {
 
 继承复用虽然有简单和易实现的优点，但它也存在以下缺点：
 
-1. 继承复用破坏了类的封装性。因为继承会将父类的实现细节暴露给子类，父类对子类是透明的，所以这种复用又称为“白箱”复用。
-2. 子类与父类的耦合度高。父类的实现的任何改变都会导致子类的实现发生变化，这不利于类的扩展与维护。
-3. 它限制了复用的灵活性。从父类继承而来的实现是静态的，在编译时已经定义，所以在运行时不可能发生变化。
+1. **继承复用破坏了类的封装性。**因为继承会将父类的实现细节暴露给子类，父类对子类是透明的，所以这种复用又称为“白箱”复用。
+2. **子类与父类的耦合度高**。父类的实现的任何改变都会导致子类的实现发生变化，这不利于类的扩展与维护。
+3. **它限制了复用的灵活性**。从父类继承而来的实现是静态的，在编译时已经定义，所以在运行时不可能发生变化。
 
 采用组合或聚合复用时，可以将已有对象纳入新对象中，使之成为新对象的一部分，新对象可以调用已有对象的功能，它有以下优点：
 
@@ -665,11 +669,11 @@ public class Agent {
 
 汽车按“动力源”划分可分为汽油汽车、电动汽车等；按“颜色”划分可分为白色汽车、黑色汽车和红色汽车等。如果同时考虑这两种分类，其组合就很多。类图如下： 
 
-<img src="img/合成复用原则.png" alt="image-20191229173554296" style="zoom:80%;" />
+<img src="https://img-blog.csdnimg.cn/20210506201518204.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hleGlucWlvbmc=,size_16,color_FFFFFF,t_70#pic_center" alt="image-20191229173554296" style="zoom:80%;" />
 
-从上面类图我们可以看到使用继承复用产生了很多子类，如果现在又有新的动力源或者新的颜色的话，就需要再定义新的类。我们试着将继承复用改为聚合复用看一下。
+从上面类图我们可以看到使用继承复用产生了很多子类，如果现在又有新的动力源或者新的颜色的话，就需要再定义新的类。我们试着**将继承复用改为聚合复用**看一下。
 
-<img src="img/合成复用原则1.png" alt="image-20191229173554296" style="zoom:80%;" />
+<img src="https://img-blog.csdnimg.cn/20210506201530957.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hleGlucWlvbmc=,size_16,color_FFFFFF,t_70#pic_center" alt="image-20191229173554296" style="zoom:80%;" />
 
 
 
