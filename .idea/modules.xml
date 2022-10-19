@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ch1_Singleton/ch1_Singleton.iml" filepath="$PROJECT_DIR$/ch1_Singleton/ch1_Singleton.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch2_factory/ch2_factory.iml" filepath="$PROJECT_DIR$/ch2_factory/ch2_factory.iml" />
     </modules>
   </component>
 </project>
