@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ch0_principles/ch0_principles.iml" filepath="$PROJECT_DIR$/ch0_principles/ch0_principles.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ch1_Singleton/ch1_Singleton.iml" filepath="$PROJECT_DIR$/ch1_Singleton/ch1_Singleton.iml" />
     </modules>
   </component>
 </project>
