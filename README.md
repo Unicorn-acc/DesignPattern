@@ -1,12 +1,8 @@
 # 设计模式
 
-黑马设计模式详解、笔记：https://www.bilibili.com/video/BV1Np4y1z7BU
+黑马设计模式详解：https://www.bilibili.com/video/BV1Np4y1z7BU
 
-参考：
-
-https://bright-boy.gitee.io/technical-notes/#/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index
-
-https://blog.csdn.net/qq_40493944/category_11264667.html
+笔记参考：https://luzhenyu.blog.csdn.net/article/details/122311416
 
 # 3 软件设计原则
 
@@ -328,3 +324,333 @@ Collection接口是抽象工厂类，ArrayList是具体的工厂类；Iterator�
 >
 > ​	2,Calendar类中的getInstance()方法使用的是工厂模式；
 
+## 4.3 原型模式
+
+**4.3.1 概述**
+
+用一个已经创建的实例作为原型，通过复制该原型对象来创建一个和原型对象相同的新对象。
+
+**4.3.2 结构**
+
+原型模式包含如下角色：
+
+- 抽象原型类：规定了具体原型对象必须实现的的 clone() 方法。
+- 具体原型类：实现抽象原型类的 clone() 方法，它是可被复制的对象。
+- 访问类：使用具体原型类中的 clone() 方法来复制新的对象。
+
+**4.3.3 实现**
+
+原型模式的克隆分为浅克隆和深克隆。
+
+> ​	浅克隆：创建一个新对象，**新对象的属性**和原来对象完全相同，对于非基本类型属性，仍指向原有属性所指向的对象的内存地址。
+>
+> ​	深克隆：创建一个新对象，属性中引用的其他对象也会被克隆，不再指向原有对象地址。
+>
+> 简言之：
+
+- **浅克隆，当对象被复制时只复制它本身和其中包含的值类型的成员变量，而引用类型的成员对象并没有复制。**
+- **深克隆，除了对象本身被复制外，对象所包含的所有成员变量也将复制。**
+
+> 浅克隆类似 “快捷方式”，深克隆才是真正的 “复制文件”。
+
+
+
+Java中的Object类中提供了 `clone()` 方法来实现**浅克隆**。
+
+Java 中，如果需要**实现深克隆，可以通过覆盖 Object 类 的 clone() 实现（不安全），也可以通过序列化(Serialization)（常用，自定义类需要实现Serializable接口）等方式**来实现。
+
+如果引用类型里面还包含很多引用类型，或 者内层引用类型的类里面又包含引用类型，使用 clone 方法就会很麻烦。这时可以用序列化的方式来实现对象的深克隆。
+
+> **一、数据类型**
+>
+> 基本数据类型的特点：直接存储在栈(stack)中的数据
+> 引用数据类型的特点：存储的是该对象在栈中引用，真实的数据存放在堆内存里
+>
+> 引用数据类型在栈中存储了指针，该指针指向堆中该实体的起始地址。当解释器寻找引用值时，会首先检索其在栈中的地址，取得地址后从堆中获得实体。
+>
+> **二、浅拷贝和深拷贝**
+>
+> 深拷贝和浅拷贝是只针对Object和Array这样的引用数据类型的。
+>
+> 浅拷贝只复制指向某个对象的指针，而不复制对象本身，新旧对象还是共享同一块内存。
+>
+> 但深拷贝会另外创造一个一模一样的对象，新对象跟原对象不共享内存，修改新对象不会改到原对象。
+
+
+
+
+
+
+
+## 4.5 建造者模式
+
+**4.4.1 概述**
+
+将一个复杂对象的构建与表示分离，使得同样的构建过程可以创建不同的表示。
+
+<img src="https://img-blog.csdnimg.cn/4500f7b11d1841f2a4b01f30737c988c.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA6JCM5a6F6bm_5ZCM5a2m,size_1,color_FFFFFF,t_70,g_se,x_16" style="zoom:60%;" />
+
+- 分离了部件的构造(由Builder来负责)和装配(由Director负责)。 从而可以构造出复杂的对象。这个模式适用于：某个对象的构建过程复杂的情况。
+- 由于实现了构建和装配的解耦。不同的构建器，相同的装配，也可以做出不同的对象；相同的构建器，不同的装配顺序也可以做出不同的对象。也就是**实现了构建算法、装配算法的解耦，实现了更好的复用。**
+- 建造者模式可以将部件和其组装过程分开，一步一步创建一个复杂的对象。用户只需要指定复杂对象的类型就可以得到该对象，而无须知道其内部的具体构造细节。
+
+**4.4.2 结构**
+
+建造者（Builder）模式包含如下角色：
+
+- 抽象建造者类（Builder）：这个接口规定要实现复杂对象的那些部分的创建，并不涉及具体的部件对象的创建。 
+- 具体建造者类（ConcreteBuilder）：实现 Builder 接口，完成复杂产品的各个部件的具体创建方法。在构造过程完成后，提供产品的实例。 
+- 产品类（Product）：要创建的复杂对象。
+- 指挥者类（Director）：调用具体建造者来创建复杂对象的各个部分，在指导者中不涉及具体产品的信息，只负责保证对象各部分完整创建或按某种顺序创建。 
+
+
+
+**指挥者用来指挥建造顺序，建造者只管造部件**
+
+**指挥者与抽象工厂模式区别：**
+
+抽象工厂模式就是既要造部件又要组装。建造者模式：由具体建造者造部件，指挥者组装
+
+- 指挥者模式是抽象工厂模式其中的一种
+
+
+
+**优点：**
+
+- 建造者模式的封装性很好。使用建造者模式可以有效的封装变化，在使用建造者模式的场景中，一般产品类和建造者类是比较稳定的，因此，将主要的业务逻辑封装在指挥者类中对整体而言可以取得比较好的稳定性。
+- 在建造者模式中，客户端不必知道产品内部组成的细节，**将产品本身与产品的创建过程解耦**，使得相同的创建过程可以创建不同的产品对象。
+- 可以更加精细地控制产品的创建过程 。将复杂产品的创建步骤分解在不同的方法中，使得创建过程更加清晰，也更方便使用程序来控制创建过程。
+- 建造者模式很容易进行扩展。如果有新的需求，通过实现一个新的建造者类就可以完成，基本上不用修改之前已经测试通过的代码，因此也就不会对原有功能引入风险。符合开闭原则。
+
+**缺点：**
+
+- 建造者模式所创建的产品一般具有较多的共同点，其组成部分相似，如果产品之间的差异性很大，则不适合使用建造者模式，因此其使用范围受到一定的限制。
+
+
+## 4.6 创建者模式对比
+
+### 4.6.1 工厂方法模式VS建造者模式
+
+工厂方法模式注重的是整体对象的创建方式；而建造者模式注重的是部件构建的过程，意在通过一步一步地精确构造创建出一个复杂的对象。
+
+我们举个简单例子来说明两者的差异，如要制造一个超人，如果使用工厂方法模式，直接产生出来的就是一个力大无穷、能够飞翔、内裤外穿的超人；而如果使用建造者模式，则需要组装手、头、脚、躯干等部分，然后再把内裤外穿，于是一个超人就诞生了。
+
+### 4.6.2 抽象工厂模式VS建造者模式
+
+抽象工厂模式实现对产品家族的创建，一个产品家族是这样的一系列产品：具有不同分类维度的产品组合，采用抽象工厂模式则是不需要关心构建过程，只关心什么产品由什么工厂生产即可。
+
+建造者模式则是要求按照指定的蓝图建造产品，它的主要目的是通过组装零配件而产生一个新产品。
+
+如果将抽象工厂模式看成汽车配件生产工厂，生产一个产品族的产品，那么建造者模式就是一个汽车组装工厂，通过对部件的组装可以返回一辆完整的汽车。
+
+# 5 结构型模式
+
+结构型模式描述如何将类或对象按某种布局组成更大的结构。它分为**类结构型模式和对象结构型模式**，前者采用**继承机制**来组织接口和类，后者釆用**组合或聚合**来组合对象。
+
+由于组合关系或聚合关系比继承关系耦合度低，满足“合成复用原则”，所以对象结构型模式比类结构型模式具有更大的灵活性。
+
+桥结构型模式分为以下 7 种：（**桥代理组合适配器，享元回家装饰外观**）
+
+- 代理模式
+- 适配器模式
+- 装饰者模式
+- 桥接模式
+- 外观模式
+- 组合模式
+- 享元模式
+
+## 5.1 代理模式
+
+**5.1.1 概述**
+
+由于某些原因需要给某对象提供一个代理以控制对该对象的访问。这时，访问对象不适合或者不能直接引用目标对象，代理对象作为访问对象和目标对象之间的中介。（**买电脑：卖家和厂商中间有代理商**）
+
+Java中的代理按照代理类生成时机不同又分为**静态代理和动态代理**。**静态代理代理类在编译期就生成，而动态代理代理类则是在Java运行时动态生成。动态代理又有JDK代理和CGLib代理两种**。
+
+**5.1.2 结构**
+
+代理（Proxy）模式分为三种角色：
+
+- 抽象主题（Subject）类： 通过接口或抽象类声明真实主题和代理对象实现的业务方法。
+- 真实主题（Real Subject）类： 实现了抽象主题中的具体业务，是代理对象所代表的真实对象，是最终要引用的对象。
+- 代理（Proxy）类 ： 提供了与真实主题相同的接口，其内部含有对真实主题的引用，它可以访问、控制或扩展真实主题的功能。
+
+### 5.1.3 静态代理
+
+我们通过案例来感受一下静态代理。
+
+【例】火车站卖票
+
+如果要买火车票的话，需要去火车站买票，坐车到火车站，排队等一系列的操作，显然比较麻烦。而火车站在多个地方都有代售点，我们去代售点买票就方便很多了。这个例子其实就是典型的代理模式，**火车站是目标对象，代售点是代理对象**。类图如下：
+
+<img src="https://img-blog.csdnimg.cn/7accab7a41f149fe8605f3d99b8e1c2c.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA6JCM5a6F6bm_5ZCM5a2m,size_20,color_FFFFFF,t_70,g_se,x_16" style="zoom:80%;" />
+
+- 测试类直接访问的是ProxyPoint类对象，也就是说ProxyPoint作为访问对象和目标对象的中介。同时也**对sell方法进行了增强**（代理点收取一些服务费用）。
+
+### 5.1.4 JDK动态代理P58
+
+接下来我们使用动态代理实现上面案例，先说说JDK提供的动态代理。Java中提供了一个动态代理类Proxy，Proxy并不是我们上述所说的代理对象的类，而是**提供了一个创建代理对象的静态方法（newProxyInstance方法）来获取代理对象**。
+
+```java
+public class ProxyFactory {
+
+    //声明目标对象
+    private TrainStation station = new TrainStation();
+
+    //获取代理对象的方法
+    public SellTickets getProxyObject() {
+        //返回代理对象
+        /*
+            ClassLoader loader : 类加载器，用于加载代理类。可以通过目标对象获取类加载器
+            Class<?>[] interfaces ： 代理类实现的接口的字节码对象
+            InvocationHandler h ： 代理对象的调用处理程序
+         */
+        SellTickets proxyObject = (SellTickets)Proxy.newProxyInstance(
+                station.getClass().getClassLoader(),
+                station.getClass().getInterfaces(),
+                new InvocationHandler() {
+
+                    /*
+                        Object proxy : 代理对象。和proxyObject对象是同一个对象，在invoke方法中基本不用
+                        Method method ： 对接口中的方法进行封装的method对象
+                        Object[] args ： 调用方法的实际参数
+
+                        返回值： 方法的返回值。
+                     */
+                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                        //System.out.println("invoke方法执行了");
+                        System.out.println("代售点收取一定的服务费用(jdk动态代理)");
+                        //执行目标对象的方法
+                        Object obj = method.invoke(station, args);
+                        return obj;
+                    }
+                }
+        );
+        return proxyObject;
+    }
+}
+
+```
+
+JDK 动态代理分析
+思考以下问题：
+
+ProxyFactory 是代理类吗？
+
+ProxyFactory 不是代理模式中所说的代理类，而是程序在运行过程中动态的在内存中生成的代理类。
+
+通过阿里巴巴开源的 Java 诊断工具（Arthas【阿尔萨斯】）查看代理类的结构：（去除其他代码）
+
+```java
+// 程序运行过程中动态生成的代理类
+public final class $Proxy0 extends Proxy implements SellTickets {
+
+  private static Method m3;
+
+    public $Proxy0(InvocationHandler invocationHandler) {
+        super(invocationHandler);
+    }
+
+    static {
+      m3 = Class.forName("com.itheima.proxy.dynamic.jdk.SellTickets").getMethod("sell", new Class[0]);
+      return;
+    }
+  
+    public final void sell() {
+      this.h.invoke(this, m3, null);
+    }
+}
+
+```
+
+v从上面的类中，我们可以看到以下几个信息：
+
+- 代理类 **$Proxy0** 实现了 SellTickets 接口，这也就印证了真实类和代理类实现同样的接口。
+- 代理类 $Proxy0 将我们提供了的匿名内部类对象传递给了父类。
+
+```java
+// 程序运行过程中动态生成的代理类
+public final class $Proxy0 extends Proxy implements SellTickets {
+    private static Method m3;
+
+    public $Proxy0(InvocationHandler invocationHandler) {
+        super(invocationHandler);
+    }
+
+    static {
+        m3 = Class.forName("com.itheima.proxy.dynamic.jdk.SellTickets").getMethod("sell", new Class[0]);
+    }
+	  
+    // ② 根据多态的特性，执行的是代理类 $Proxy0 中的 sell() 方法
+    public final void sell() {
+	      // ③ 代理类 $Proxy0 中的 sell() 方法中又调用了 InvocationHandler 接口的子实现类对象的 invoke 方法
+        this.h.invoke(this, m3, null);
+    }
+}
+
+// Java提供的动态代理相关类
+public class Proxy implements java.io.Serializable {
+	protected InvocationHandler h;
+	 
+	protected Proxy(InvocationHandler h) {
+        this.h = h;
+    }
+}
+
+// 代理工厂类
+public class ProxyFactory {
+
+    private TrainStation station = new TrainStation();
+
+    public SellTickets getProxyObject() {
+        SellTickets sellTickets = (SellTickets) Proxy.newProxyInstance(station.getClass().getClassLoader(),
+                station.getClass().getInterfaces(),
+                new InvocationHandler() {
+                    // ④ invoke 方法通过反射执行了真实对象所属类 TrainStation 中的 sell() 方法
+                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                        System.out.println("代理点收取一些服务费用(JDK动态代理方式)");
+                        Object result = method.invoke(station, args);
+                        return result;
+                    }
+                });
+        return sellTickets;
+    }
+}
+
+
+// 测试访问类
+public class Client {
+    public static void main(String[] args) {
+        // 获取代理对象
+        ProxyFactory factory = new ProxyFactory();
+      	// ① 在测试类中通过代理对象调用 sell() 方法
+        SellTickets proxyObject = factory.getProxyObject();
+        proxyObject.sell();
+    }
+}
+
+```
+
+
+
+**动态代理的执行流程是什么样？**
+
+执行流程如下：
+
+① 在测试类中通过代理对象调用 sell() 方法
+
+② 根据多态的特性，执行的是代理类 $Proxy0 中的 sell() 方法
+
+③ 代理类 $Proxy0 中的 sell() 方法中又调用了 InvocationHandler 接口的子实现类对象的 invoke 方法
+
+④ invoke 方法通过反射执行了真实对象所属类 TrainStation 中的 sell() 方法
+
+
+
+
+
+### 5.1.5 CGLIB 动态代理
+
+上面的案例中，如果没有定义 SellTickets 接口，只定义了 TrainStation 火车站类。则 JDK 代理无法使用，因为 JDK 动态代理要求必须定义接口，它只能对接口进行代理。
+
+CGLIB 是一个功能强大，高性能的代码生成包，它可以为没有实现接口的类提供代理，为 JDK 的动态代理提供了很好的补充
